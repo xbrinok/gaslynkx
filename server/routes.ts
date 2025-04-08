@@ -42,7 +42,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Submit wallet address
   app.post('/api/submit/wallet', async (req, res) => {
     try {
-      const { telegramId, walletAddress, referralCode } = walletAddressSchema.parse(req.body);
+      // Only validate telegramId and walletAddress, make referralCode optional
+      const { telegramId, walletAddress } = walletAddressSchema.omit({ referralCode: true }).parse(req.body);
+      
+      // Get optional referral code from body if present
+      const referralCode = req.body.referralCode;
       
       // Look up the referrer by referral code if one was provided
       let referredBy = null;
