@@ -43,12 +43,12 @@ const ReferralTracker: React.FC = () => {
   };
 
   useEffect(() => {
-    // Apply animation classes when component mounts
+    // For admin panel, don't use animations but ensure content is visible
     const elements = document.querySelectorAll('.animate-on-mount');
-    elements.forEach((el, index) => {
-      setTimeout(() => {
-        el.classList.add('page-transition-fade-in');
-      }, index * 150);
+    elements.forEach((el) => {
+      // Remove opacity-0 class and add full opacity
+      el.classList.remove('opacity-0');
+      el.classList.add('opacity-100');
     });
   }, []);
   
@@ -57,7 +57,7 @@ const ReferralTracker: React.FC = () => {
   if (!isAuthorized) {
     return (
       <div className="container mx-auto px-4 py-16 min-h-screen flex flex-col items-center justify-center bg-gray-900">
-        <div className="animate-on-mount opacity-0 max-w-md w-full bg-gray-800 p-8 rounded-lg border border-gray-700 shadow-xl">
+        <div className="max-w-md w-full bg-gray-800 p-8 rounded-lg border border-gray-700 shadow-xl">
           <h1 className="text-3xl font-bold mb-6 text-center text-white">
             Referral <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">Tracker</span>
           </h1>
@@ -148,7 +148,7 @@ const ReferralTracker: React.FC = () => {
   return (
     <div className="container mx-auto px-4 py-16 min-h-screen bg-gray-900">
       <div className="max-w-6xl mx-auto">
-        <header className="mb-12 animate-on-mount opacity-0">
+        <header className="mb-12">
           <h1 className="text-4xl font-bold mb-4 text-white">
             Referral <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">Analytics</span>
           </h1>
@@ -158,32 +158,32 @@ const ReferralTracker: React.FC = () => {
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-          <div className="bg-gray-800 p-6 rounded-lg border border-gray-700 shadow-lg animate-on-mount opacity-0">
+          <div className="bg-gray-800 p-6 rounded-lg border border-gray-700 shadow-lg">
             <h3 className="text-xl font-medium mb-2 text-white">Total Referrers</h3>
             <p className="text-4xl font-bold text-blue-400">
               {referralData.referrals.length}
             </p>
           </div>
           
-          <div className="bg-gray-800 p-6 rounded-lg border border-gray-700 shadow-lg animate-on-mount opacity-0">
+          <div className="bg-gray-800 p-6 rounded-lg border border-gray-700 shadow-lg">
             <h3 className="text-xl font-medium mb-2 text-white">Total Referrals</h3>
             <p className="text-4xl font-bold text-purple-400">
               {referralData.referrals.reduce((acc, item) => acc + item.referred.length, 0)}
             </p>
           </div>
           
-          <div className="bg-gray-800 p-6 rounded-lg border border-gray-700 shadow-lg animate-on-mount opacity-0">
+          <div className="bg-gray-800 p-6 rounded-lg border border-gray-700 shadow-lg">
             <h3 className="text-xl font-medium mb-2 text-white">Conversion Rate</h3>
             <p className="text-4xl font-bold text-green-400">85%</p>
           </div>
         </div>
         
-        <div className="bg-gray-800 rounded-lg border border-gray-700 p-6 shadow-lg mb-8 animate-on-mount opacity-0">
+        <div className="bg-gray-800 rounded-lg border border-gray-700 p-6 shadow-lg mb-8">
           <h2 className="text-2xl font-bold mb-6 text-white">Referral Connections</h2>
           
           <div className="space-y-6">
             {referralData.referrals.map((item, index) => (
-              <div key={index} className="animate-on-mount opacity-0">
+              <div key={index}>
                 <div className="flex items-center mb-3">
                   <div className="w-12 h-12 flex items-center justify-center rounded-full bg-blue-500/20 mr-4">
                     <span className="text-blue-400 font-medium">{index + 1}</span>
@@ -207,7 +207,7 @@ const ReferralTracker: React.FC = () => {
           </div>
         </div>
         
-        <div className="text-center animate-on-mount opacity-0">
+        <div className="text-center">
           <button
             onClick={() => setIsAuthorized(false)}
             className="px-6 py-3 bg-gray-700 text-gray-300 rounded-md hover:bg-gray-600 transition-all duration-300"
