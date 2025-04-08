@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { telegramAuthSchema, walletAddressSchema } from "@shared/schema";
+import { telegramAuthSchema, walletAddressSchema, type User } from "@shared/schema";
 import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
 
@@ -93,6 +93,56 @@ export async function registerRoutes(app: Express): Promise<Server> {
           error: error instanceof Error ? error.message : 'Unknown error'
         });
       }
+    }
+  });
+
+  // Get referral tracking data
+  app.get('/api/referrals', async (req, res) => {
+    try {
+      // This is a protected endpoint, would typically use proper authentication
+      // For demo purposes, we're keeping it simple
+      
+      const allUsers = await storage.getAllUsers();
+      
+      // Group users by referrers
+      const referralMap = new Map();
+      
+      // First, identify all referrers
+      allUsers.forEach((user: User) => {
+        if (user.referralCode && !referralMap.has(user.referralCode)) {
+          referralMap.set(user.referralCode, {
+            referrer: user.walletAddress.slice(0, 5) + '...' + user.walletAddress.slice(-5),
+            referred: []
+          });
+        }
+      });
+      
+      // Then, add referred users to their referrers
+      allUsers.forEach((user: User) => {
+        if (user.referredBy && referralMap.has(user.referredBy)) {
+          const maskedWallet = user.walletAddress.slice(0, 5) + '...' + user.walletAddress.slice(-5);
+          const referrer = referralMap.get(user.referredBy);
+          if (referrer && referrer.referred) {
+            referrer.referred.push(maskedWallet);
+          }
+        }
+      });
+      
+      // Convert map to array for response
+      const referrals = Array.from(referralMap.values())
+        .filter(item => item.referred.length > 0); // Only include referrers who have referrals
+      
+      res.status(200).json({ 
+        success: true, 
+        message: 'Referral data retrieved successfully',
+        data: { referrals }
+      });
+    } catch (error) {
+      res.status(500).json({ 
+        success: false, 
+        message: 'Failed to retrieve referral data',
+        error: error instanceof Error ? error.message : 'Unknown error'
+      });
     }
   });
 

@@ -8,6 +8,7 @@ export interface IStorage {
   getUserByTelegramId(telegramId: string): Promise<User | undefined>;
   getUserByReferralCode(referralCode: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
+  getAllUsers(): Promise<User[]>;
 }
 
 // File path for storing wallet addresses
@@ -152,6 +153,10 @@ export class FileStorage implements IStorage {
     this.saveUsers();
     
     return user;
+  }
+
+  async getAllUsers(): Promise<User[]> {
+    return [...this.users];
   }
 }
 

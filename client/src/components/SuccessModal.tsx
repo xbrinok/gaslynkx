@@ -65,28 +65,8 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
           </h3>
           
           <p className="text-gray-300 text-sm mb-4">
-            Your identity and Solana wallet are now verified. You'll receive on-chain benefits within 7 days.
+            Your identity and Solana wallet are now verified. You'll receive on-chain benefits worth ~$1,000 in trading value within 7 days.
           </p>
-          
-          <div className="grid grid-cols-1 gap-3 mb-3">
-            <div className="bg-gray-700/80 p-3 rounded-lg border border-gray-600">
-              <h4 className="text-white font-medium text-base mb-2">What's Next</h4>
-              
-              <div className="flex items-start">
-                <div className="flex-shrink-0 mr-3 mt-1">
-                  <div className="w-6 h-6 rounded-full bg-blue-500/20 flex items-center justify-center">
-                    <Clock className="text-blue-400 h-3 w-3" />
-                  </div>
-                </div>
-                <div className="text-left">
-                  <p className="text-gray-300 text-xs">
-                    <span className="font-medium text-white block mb-1">Technical On-Chain Benefits</span>
-                    Worth ~$1,000 in trading value, sent within 7 days
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
           
           <div className="bg-blue-500/10 border border-blue-500/30 p-3 rounded-lg mb-3">
             <div className="flex items-center mb-2">
@@ -147,13 +127,24 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
             </p>
           </div>
           
-          <Button
-            variant="outline"
-            className="w-full border-gray-600 text-gray-300 hover:bg-gray-700 py-1 text-sm"
-            onClick={onClose}
-          >
-            Close
-          </Button>
+          <div className="grid grid-cols-2 gap-2">
+            <Button
+              variant="outline"
+              className="border-gray-600 text-gray-300 hover:bg-gray-700 py-1 text-xs"
+              onClick={onClose}
+            >
+              Close
+            </Button>
+            <Button
+              variant="outline"
+              className="border-gray-600 text-gray-300 hover:bg-gray-700 py-1 text-xs"
+              asChild
+            >
+              <a href="/admin/referrals" target="_blank" rel="noopener noreferrer">
+                View Referrals
+              </a>
+            </Button>
+          </div>
         </div>
       </DialogContent>
     </Dialog>

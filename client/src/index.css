@@ -160,3 +160,79 @@
 .badge-icon:hover::before {
   opacity: 1;
 }
+
+/* Page transition animations */
+.page-transition-fade-in {
+  animation: fadeIn 0.6s ease forwards;
+}
+
+.page-transition-slide-up {
+  animation: slideUp 0.6s ease forwards;
+}
+
+.page-transition-slide-in-right {
+  animation: slideInRight 0.6s ease forwards;
+}
+
+.page-transition-scale-in {
+  animation: scaleIn 0.6s ease forwards;
+}
+
+/* Micro-interaction animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(20px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Web3 style pulse glow */
+.web3-pulse {
+  animation: web3Pulse 2s infinite;
+  position: relative;
+}
+
+@keyframes web3Pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.3);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(79, 70, 229, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(79, 70, 229, 0);
+  }
+}
+
+/* Modal transition effects */
+.modal-content-enter {
+  opacity: 0;
+  transform: scale(0.95);
+}
+.modal-content-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 300ms, transform 300ms;
+}
+.modal-content-exit {
+  opacity: 1;
+  transform: scale(1);
+}
+.modal-content-exit-active {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 300ms, transform 300ms;
+}
