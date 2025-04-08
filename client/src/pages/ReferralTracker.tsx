@@ -3,12 +3,23 @@ import { useQuery } from '@tanstack/react-query';
 import { apiRequest } from '@/lib/queryClient';
 import Web3LoadingSpinner from '@/components/Web3LoadingSpinner';
 import { AlertCircle, ArrowRight } from 'lucide-react';
+import { initParticles } from '@/lib/particles-config';
+
+interface Referral {
+  referrer: string;
+  referred: string[];
+}
+
+interface ApiResponse {
+  success: boolean;
+  message: string;
+  data: {
+    referrals: Referral[];
+  };
+}
 
 interface ReferralData {
-  referrals: {
-    referrer: string;
-    referred: string[];
-  }[];
+  referrals: Referral[];
 }
 
 const ReferralTracker: React.FC = () => {
@@ -16,7 +27,7 @@ const ReferralTracker: React.FC = () => {
   const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
 
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error } = useQuery<ApiResponse>({
     queryKey: ['/api/referrals'],
     enabled: isAuthorized,
     staleTime: 1000 * 60 * 5, // 5 minutes
@@ -41,11 +52,23 @@ const ReferralTracker: React.FC = () => {
       }, index * 150);
     });
   }, []);
+  
+  // Initialize particles.js when authorized
+  useEffect(() => {
+    if (isAuthorized) {
+      // Short delay to ensure DOM is ready
+      setTimeout(() => {
+        initParticles();
+      }, 100);
+    }
+  }, [isAuthorized]);
 
   if (!isAuthorized) {
     return (
-      <div className="container mx-auto px-4 py-16 min-h-screen flex flex-col items-center justify-center bg-gray-900">
-        <div className="animate-on-mount opacity-0 max-w-md w-full bg-gray-800 p-8 rounded-lg border border-gray-700 shadow-xl">
+      <div className="container mx-auto px-4 py-16 min-h-screen flex flex-col items-center justify-center bg-gray-900 relative z-10">
+        {/* Add particle.js background */}
+        <div className="absolute inset-0 -z-10 opacity-30" id="particles-js"></div>
+        <div className="animate-on-mount opacity-0 max-w-md w-full bg-gray-800/80 backdrop-blur-sm p-8 rounded-lg border border-gray-700 shadow-xl relative z-10">
           <h1 className="text-3xl font-bold mb-6 text-center text-white">
             Referral <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">Tracker</span>
           </h1>
@@ -90,7 +113,9 @@ const ReferralTracker: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="container mx-auto px-4 py-16 min-h-screen flex flex-col items-center justify-center">
+      <div className="container mx-auto px-4 py-16 min-h-screen flex flex-col items-center justify-center bg-gray-900 relative z-10">
+        {/* Add particle.js background */}
+        <div className="absolute inset-0 -z-10 opacity-30" id="particles-js"></div>
         <Web3LoadingSpinner size="large" text="Loading referral data..." />
       </div>
     );
@@ -98,8 +123,10 @@ const ReferralTracker: React.FC = () => {
 
   if (error) {
     return (
-      <div className="container mx-auto px-4 py-16 min-h-screen flex flex-col items-center justify-center">
-        <div className="max-w-lg text-center">
+      <div className="container mx-auto px-4 py-16 min-h-screen flex flex-col items-center justify-center bg-gray-900 relative z-10">
+        {/* Add particle.js background */}
+        <div className="absolute inset-0 -z-10 opacity-30" id="particles-js"></div>
+        <div className="max-w-lg text-center relative z-10">
           <h2 className="text-2xl font-bold text-red-400 mb-4">Error Loading Data</h2>
           <p className="text-gray-300 mb-8">
             There was a problem loading the referral data. Please try again later.
@@ -115,29 +142,29 @@ const ReferralTracker: React.FC = () => {
     );
   }
 
-  // Use API data when available, otherwise show fallback mock data for demonstration
-  const referralData: ReferralData = data?.data?.referrals?.length > 0 
-    ? { referrals: data.data.referrals }
-    : {
-        referrals: [
-          {
-            referrer: "SolWa...ab15c",
-            referred: ["SolWa...e92a1", "SolWa...f83b2"]
-          },
-          {
-            referrer: "SolWa...d72e4",
-            referred: ["SolWa...c61a5"]
-          },
-          {
-            referrer: "SolWa...9b3c7",
-            referred: ["SolWa...a25d8", "SolWa...b14e9", "SolWa...c35f0"]
-          }
-        ]
-      };
+  // Use API data when available, otherwise use fallback data
+  const referralData: ReferralData = {
+    referrals: data?.data?.referrals || [
+      {
+        referrer: "SolWa...ab15c",
+        referred: ["SolWa...e92a1", "SolWa...f83b2"]
+      },
+      {
+        referrer: "SolWa...d72e4",
+        referred: ["SolWa...c61a5"]
+      },
+      {
+        referrer: "SolWa...9b3c7",
+        referred: ["SolWa...a25d8", "SolWa...b14e9", "SolWa...c35f0"]
+      }
+    ]
+  };
 
   return (
-    <div className="container mx-auto px-4 py-16 min-h-screen bg-gray-900">
-      <div className="max-w-6xl mx-auto">
+    <div className="container mx-auto px-4 py-16 min-h-screen bg-gray-900 relative z-10">
+      {/* Add particle.js background */}
+      <div className="absolute inset-0 -z-10 opacity-30" id="particles-js"></div>
+      <div className="max-w-6xl mx-auto relative z-10">
         <header className="mb-12 animate-on-mount opacity-0">
           <h1 className="text-4xl font-bold mb-4 text-white">
             Referral <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">Analytics</span>

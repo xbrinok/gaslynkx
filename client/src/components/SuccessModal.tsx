@@ -127,24 +127,13 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
             </p>
           </div>
           
-          <div className="grid grid-cols-2 gap-2">
-            <Button
-              variant="outline"
-              className="border-gray-600 text-gray-300 hover:bg-gray-700 py-1 text-xs"
-              onClick={onClose}
-            >
-              Close
-            </Button>
-            <Button
-              variant="outline"
-              className="border-gray-600 text-gray-300 hover:bg-gray-700 py-1 text-xs"
-              asChild
-            >
-              <a href="/admin/referrals" target="_blank" rel="noopener noreferrer">
-                View Referrals
-              </a>
-            </Button>
-          </div>
+          <Button
+            variant="outline"
+            className="w-full border-gray-600 text-gray-300 hover:bg-gray-700 py-1 text-sm"
+            onClick={onClose}
+          >
+            Close
+          </Button>
         </div>
       </DialogContent>
     </Dialog>
