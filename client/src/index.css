@@ -108,3 +108,26 @@
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(to bottom, #2563eb, #7c3aed);
 }
+
+/* Social button styles */
+.social-button {
+  position: relative;
+  display: inline-block;
+  margin: 0 10px;
+}
+
+.button-background {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(147, 51, 234, 0.3));
+  filter: blur(15px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.social-button:hover .button-background {
+  opacity: 1;
+}

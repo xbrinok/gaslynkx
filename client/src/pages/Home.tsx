@@ -9,24 +9,25 @@ import SuccessModal from "@/components/SuccessModal";
 import { TelegramAuth } from "@shared/schema";
 
 const Home: React.FC = () => {
+  const [telegramModalOpen, setTelegramModalOpen] = useState(false);
   const [walletModalOpen, setWalletModalOpen] = useState(false);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
-  // We'll use a mock user or null for direct wallet submission
-  const [mockUser] = useState<TelegramAuth | null>({
-    id: "12345",
-    first_name: "User",
-    username: "user",
-    photo_url: "",
-    auth_date: Math.floor(Date.now() / 1000),
-    hash: "mock-hash"
-  });
+  const [authenticatedUser, setAuthenticatedUser] = useState<TelegramAuth | null>(null);
 
   const handleCheckEligibility = () => {
-    // Open wallet modal directly
+    // First show the Telegram authentication modal
+    setTelegramModalOpen(true);
+  };
+
+  const handleTelegramSuccess = (user: TelegramAuth) => {
+    // When Telegram auth is successful, close that modal and open wallet modal
+    setTelegramModalOpen(false);
+    setAuthenticatedUser(user);
     setWalletModalOpen(true);
   };
 
   const handleWalletSubmit = () => {
+    // When wallet is submitted, close that modal and show success
     setWalletModalOpen(false);
     setSuccessModalOpen(true);
   };
@@ -38,14 +39,22 @@ const Home: React.FC = () => {
       <HowItWorks />
       <Footer />
       
-      {/* We still keep the TelegramAuthModal in case we want to use it later */}
+      {/* Telegram authentication modal - shown first */}
+      <TelegramAuthModal 
+        isOpen={telegramModalOpen} 
+        onClose={() => setTelegramModalOpen(false)} 
+        onSuccess={handleTelegramSuccess}
+      />
+      
+      {/* Wallet address modal - shown after Telegram auth */}
       <WalletAddressModal 
         isOpen={walletModalOpen} 
         onClose={() => setWalletModalOpen(false)} 
         onSubmit={handleWalletSubmit}
-        telegramUser={mockUser}
+        telegramUser={authenticatedUser}
       />
       
+      {/* Success modal - shown after wallet submission */}
       <SuccessModal 
         isOpen={successModalOpen} 
         onClose={() => setSuccessModalOpen(false)} 

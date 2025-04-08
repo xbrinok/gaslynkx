@@ -9,37 +9,53 @@ interface Feature {
 const features: Feature[] = [
   {
     icon: "fa-chart-line",
-    title: "Advanced Trading Insights",
-    description: "Get real-time market analysis and trading signals from seasoned professionals in the memecoin space."
+    title: "Optimize Your Trading Experience",
+    description: "We're empowering dedicated traders with state-of-the-art on-chain tools that streamline transactions and provide tangible economic enhancements for your trading journey."
   },
   {
-    icon: "fa-lock",
-    title: "Exclusive Community Access",
-    description: "Join an elite community of traders sharing strategies, tips, and early memecoin opportunities."
+    icon: "fa-users",
+    title: "Build an Elite, Verified Community",
+    description: "By uniting heavy users of Bonkbot and Trojan, we create a trusted network of serious traders. This exclusive environment nurtures community innovation, improves market insights, and unlocks special on-chain opportunities."
   },
   {
-    icon: "fa-rocket",
-    title: "On-Chain Benefits",
-    description: "Receive airdrops, gain early access to promising tokens, and participate in exclusive presales."
+    icon: "fa-shield-alt",
+    title: "Ensure Genuine Engagement",
+    description: "Our streamlined verification securely ties your Telegram identity to your Solana wallet. This process ensures that only eligible, active participants receive these on-chain benefits, aligning economic incentives with proven trading activity."
+  },
+  {
+    icon: "fa-coins",
+    title: "Provide Direct Economic Benefits",
+    description: "Beyond lowering transaction costs, eligible users gain access to a benefit mechanism valued at roughly $1,000. This technical advantage boosts your liquidity and gives your trading strategy a real-world economic uplift."
   }
 ];
 
 const Features: React.FC = () => {
   return (
-    <section id="features" className="py-12 md:py-24 bg-gray-800">
+    <section id="features" className="py-12 md:py-24 bg-gradient-to-b from-gray-800 to-gray-900">
       <div className="container mx-auto px-6">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Why Choose Us</h2>
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 text-white">
+          Why We're <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">Doing This</span>
+        </h2>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <p className="text-gray-300 text-center mb-12 max-w-3xl mx-auto">
+          Our mission is to create an ecosystem that rewards active traders and provides 
+          real economic advantages for those who contribute to the memecoin community.
+        </p>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {features.map((feature, index) => (
-            <div key={index} className="feature-card bg-gray-700 rounded-xl p-8 shadow-md hover:shadow-lg transition border border-gray-600">
-              <div className="w-16 h-16 rounded-full gradient-bg flex items-center justify-center mb-6 mx-auto md:mx-0">
-                <i className={`fas ${feature.icon} text-2xl text-white`}></i>
+            <div key={index} className="feature-card bg-gray-800/80 backdrop-blur-sm rounded-xl p-8 shadow-md hover:shadow-lg transition border border-gray-700">
+              <div className="flex items-start">
+                <div className="w-14 h-14 rounded-lg bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center mr-5 border border-blue-500/30">
+                  <i className={`fas ${feature.icon} text-xl bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500`}></i>
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-semibold mb-3 text-white">{feature.title}</h3>
+                  <p className="text-gray-300">
+                    {feature.description}
+                  </p>
+                </div>
               </div>
-              <h3 className="text-xl font-semibold mb-4 text-center md:text-left text-white">{feature.title}</h3>
-              <p className="text-gray-300 text-center md:text-left">
-                {feature.description}
-              </p>
             </div>
           ))}
         </div>

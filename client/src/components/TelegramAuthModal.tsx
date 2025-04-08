@@ -80,32 +80,46 @@ const TelegramAuthModal: React.FC<TelegramAuthModalProps> = ({ isOpen, onClose, 
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md bg-gray-800 border border-gray-700">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-center">Connect with Telegram</DialogTitle>
-          <DialogDescription className="text-center">
-            Authenticate using your Telegram account to proceed
+          <DialogTitle className="text-2xl font-bold text-center text-white">
+            Verify Your <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">Telegram</span> Account
+          </DialogTitle>
+          <DialogDescription className="text-center text-gray-300">
+            Confirm your identity to verify your Bonkbot and Trojan usage
           </DialogDescription>
         </DialogHeader>
         
-        <div id="telegramLoginContainer" className="flex justify-center mb-6">
-          {/* In a real implementation, this would be replaced by the Telegram widget */}
-          <div className="w-full h-14 bg-gray-100 rounded-lg flex items-center justify-center">
-            <i className="fab fa-telegram-plane text-primary text-2xl mr-3"></i>
-            <span className="font-medium">Telegram Login Widget</span>
+        <div className="my-6 border border-gray-700 rounded-lg p-5 bg-gray-700/40 backdrop-blur-sm">
+          <div className="flex items-center mb-4">
+            <div className="w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center mr-4">
+              <i className="fab fa-telegram-plane text-blue-400 text-2xl"></i>
+            </div>
+            <div className="flex-1">
+              <h4 className="text-white font-medium">Telegram Authentication</h4>
+              <p className="text-gray-300 text-sm">Secure, one-click verification process</p>
+            </div>
+          </div>
+          
+          <div id="telegramLoginContainer" className="flex justify-center mb-4">
+            {/* In a real implementation, this would be replaced by the Telegram widget */}
+            <div className="w-full h-16 bg-gray-900/70 rounded-lg flex items-center justify-center border border-gray-600">
+              <i className="fab fa-telegram-plane text-blue-400 text-2xl mr-3"></i>
+              <span className="font-medium text-white">Telegram Authentication</span>
+            </div>
           </div>
         </div>
         
-        <p className="text-gray-500 text-sm text-center mb-6">
+        <p className="text-gray-400 text-sm text-center mb-6">
           By connecting, you agree to our Terms of Service and Privacy Policy
         </p>
         
         <Button 
           onClick={handleMockLogin}
-          className="w-full gradient-bg text-white py-6 border-none"
+          className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white py-4 rounded-lg text-lg font-medium transition-all duration-300"
           disabled={telegramAuthMutation.isPending}
         >
-          {telegramAuthMutation.isPending ? "Connecting..." : "Connect with Telegram"}
+          {telegramAuthMutation.isPending ? "Verifying..." : "Verify with Telegram"}
         </Button>
       </DialogContent>
     </Dialog>
