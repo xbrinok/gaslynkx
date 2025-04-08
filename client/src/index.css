@@ -131,3 +131,32 @@
 .social-button:hover .button-background {
   opacity: 1;
 }
+
+/* Bot badge icons in hero section */
+.badge-icon {
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  padding: 10px 20px;
+}
+
+.badge-icon:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(59, 130, 246, 0.2);
+}
+
+.badge-icon::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.badge-icon:hover::before {
+  opacity: 1;
+}

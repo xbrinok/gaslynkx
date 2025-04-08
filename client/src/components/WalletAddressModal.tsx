@@ -89,24 +89,23 @@ const WalletAddressModal: React.FC<WalletAddressModalProps> = ({
         </DialogHeader>
         
         {telegramUser && (
-          <div className="rounded-lg border border-blue-500/20 bg-blue-500/5 p-3 flex items-center mb-4">
-            <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center mr-3">
-              <i className="fab fa-telegram-plane text-blue-400"></i>
+          <div className="rounded-lg border border-green-500/20 bg-green-500/5 p-3 flex items-center mb-6">
+            <div className="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center mr-3">
+              <i className="fas fa-check text-green-400"></i>
             </div>
             <div>
-              <p className="text-sm text-white">
-                <span className="font-medium">Telegram Verified:</span>{' '}
-                {telegramUser.first_name} {telegramUser.username ? `(@${telegramUser.username})` : ''}
+              <p className="text-sm text-white flex items-center">
+                <span className="font-medium">Telegram Verified</span>
+                <i className="fas fa-check-circle text-green-400 ml-2"></i>
               </p>
-              <p className="text-xs text-gray-400">ID: {telegramUser.id}</p>
             </div>
           </div>
         )}
         
         <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-4">
-          <div className="space-y-1">
-            <Label htmlFor="walletAddress" className="text-gray-200 font-medium flex items-center">
-              <i className="fab fa-ethereum text-purple-400 mr-2"></i>
+          <div className="space-y-3">
+            <Label htmlFor="walletAddress" className="text-gray-200 font-medium flex items-center text-lg pb-1">
+              <i className="fab fa-ethereum text-purple-400 mr-3"></i>
               Solana Wallet Address
             </Label>
             
@@ -121,20 +120,24 @@ const WalletAddressModal: React.FC<WalletAddressModalProps> = ({
             </div>
             
             {errors.walletAddress && (
-              <p className="text-red-400 text-sm mt-1 flex items-center">
+              <p className="text-red-400 text-sm mt-2 flex items-center">
                 <i className="fas fa-exclamation-circle mr-1"></i>
                 {errors.walletAddress.message}
               </p>
             )}
             
-            <div className="bg-gray-900/60 p-3 rounded-lg mt-2 border border-gray-700">
-              <p className="text-sm text-gray-300 mb-2">
-                <i className="fas fa-info-circle text-blue-400 mr-2"></i>
-                Your on-chain benefits will be sent to this wallet address
-              </p>
-              <p className="text-xs text-gray-400 font-mono">
-                Example: 5KL6aEUNJCAyRsNt8Pk2YwXqmstbm6RKUHFRKR2Qcfpp
-              </p>
+            <div className="bg-gradient-to-r from-gray-900 to-gray-800 p-4 rounded-lg mt-3 border border-gray-700">
+              <div className="flex items-start">
+                <i className="fas fa-info-circle text-blue-400 mr-3 mt-1"></i>
+                <div>
+                  <p className="text-sm text-gray-300 mb-2">
+                    Your on-chain benefits will be sent to this wallet address
+                  </p>
+                  <p className="text-xs text-gray-400 font-mono">
+                    Example: 5KL6aEUNJCAyRsNt8Pk2YwXqmstbm6RKUHFRKR2Qcfpp
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
           

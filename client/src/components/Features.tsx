@@ -37,6 +37,22 @@ const Features: React.FC = () => {
           Why We're <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">Doing This</span>
         </h2>
         
+        <div className="flex items-center justify-center mb-6">
+          <div className="badge-icon flex items-center justify-center bg-purple-500/10 border border-purple-500/30 rounded-full p-2 mr-4">
+            <div className="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center">
+              <i className="fas fa-robot text-purple-400"></i>
+            </div>
+            <span className="ml-2 text-white font-medium">For Bonkbot Users</span>
+          </div>
+          <span className="text-gray-500 mx-2">&</span>
+          <div className="badge-icon flex items-center justify-center bg-blue-500/10 border border-blue-500/30 rounded-full p-2">
+            <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
+              <i className="fas fa-horse-head text-blue-400"></i>
+            </div>
+            <span className="ml-2 text-white font-medium">For Trojan Users</span>
+          </div>
+        </div>
+        
         <p className="text-gray-300 text-center mb-12 max-w-3xl mx-auto">
           Our mission is to create an ecosystem that rewards active traders and provides 
           real economic advantages for those who contribute to the memecoin community.

@@ -38,6 +38,22 @@ const Hero: React.FC<HeroProps> = ({ onCheckEligibility }) => {
           <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">
             Upgrade Your Trading Advantage
           </h1>
+          
+          <div className="flex items-center justify-center mb-6">
+            <div className="badge-icon flex items-center justify-center bg-purple-500/10 border border-purple-500/30 rounded-full p-2 mr-4">
+              <div className="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center">
+                <i className="fas fa-robot text-purple-400"></i>
+              </div>
+              <span className="ml-2 text-white font-medium">Bonkbot</span>
+            </div>
+            <div className="badge-icon flex items-center justify-center bg-blue-500/10 border border-blue-500/30 rounded-full p-2">
+              <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
+                <i className="fas fa-horse-head text-blue-400"></i>
+              </div>
+              <span className="ml-2 text-white font-medium">Trojan</span>
+            </div>
+          </div>
+          
           <p className="text-xl md:text-2xl text-gray-300 mb-6">
             Unlock Exclusive On-Chain Benefits for Elite Memecoin Traders
           </p>
