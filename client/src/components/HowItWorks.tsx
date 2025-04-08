@@ -26,32 +26,37 @@ const steps: Step[] = [
 
 const HowItWorks: React.FC = () => {
   return (
-    <section id="how-it-works" className="py-12 md:py-24 bg-gray-50">
+    <section id="how-it-works" className="py-12 md:py-24 bg-gradient-to-b from-gray-900 to-gray-800">
       <div className="container mx-auto px-6">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">How It Works</h2>
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-white">
+          How It <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">Works</span>
+        </h2>
         
         <div className="max-w-4xl mx-auto">
-          <div className="flex flex-col md:flex-row items-center md:items-start">
-            <div className="steps-container flex flex-col items-center mb-12 md:mb-0 md:mr-10">
+          <div className="relative">
+            {/* Vertical line for desktop */}
+            <div className="hidden md:block absolute left-[30px] top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500 to-purple-600 rounded-full"></div>
+            
+            <div className="space-y-12">
               {steps.map((step, index) => (
-                <div key={index} className="step-item flex flex-col items-center mb-12 md:mb-20">
-                  <div className="step-number w-12 h-12 rounded-full gradient-bg flex items-center justify-center font-bold text-white text-xl mb-4">
+                <div key={index} className="flex flex-col md:flex-row items-start">
+                  {/* Step number circle */}
+                  <div className="hidden md:flex shrink-0 w-[60px] h-[60px] rounded-full bg-gradient-to-br from-blue-500 to-purple-600 items-center justify-center text-white font-bold text-xl shadow-lg z-10">
                     {step.number}
                   </div>
-                  {index < steps.length - 1 && (
-                    <div className="step-line hidden md:block"></div>
-                  )}
-                </div>
-              ))}
-            </div>
-            
-            <div className="step-content flex-1">
-              {steps.map((step, index) => (
-                <div key={index} className="step-description mb-12 md:mb-20">
-                  <h3 className="text-xl font-semibold mb-4">{step.title}</h3>
-                  <p className="text-gray-600">
-                    {step.description}
-                  </p>
+                  
+                  {/* Step content */}
+                  <div className="w-full md:ml-8 p-6 bg-gray-800/80 backdrop-blur-sm rounded-xl border border-gray-700 hover:border-blue-500/50 transition-all duration-300 shadow-lg hover:shadow-blue-500/20">
+                    <h3 className="text-xl font-semibold mb-3 text-white flex items-center">
+                      <span className="md:hidden mr-3 flex items-center justify-center w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full text-white font-bold">
+                        {step.number}
+                      </span>
+                      {step.title}
+                    </h3>
+                    <p className="text-gray-300">
+                      {step.description}
+                    </p>
+                  </div>
                 </div>
               ))}
             </div>

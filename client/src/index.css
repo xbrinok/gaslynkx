@@ -22,11 +22,11 @@
 }
 
 .gradient-bg {
-  background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%);
+  background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%);
 }
 
 .text-gradient {
-  background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%);
+  background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -40,7 +40,7 @@
 .step-line {
   height: 4rem;
   width: 2px;
-  background: linear-gradient(to bottom, hsl(var(--primary)) 0%, transparent 100%);
+  background: linear-gradient(to bottom, #3B82F6 0%, transparent 100%);
 }
 
 /* Additional styles for web3 look and feel */
@@ -54,4 +54,57 @@
   width: 100%;
   height: 100%;
   background-color: transparent;
+}
+
+/* Card hover effects */
+.feature-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  will-change: transform;
+  background: linear-gradient(145deg, rgba(31, 41, 55, 0.8), rgba(31, 41, 55, 1));
+  background-size: 200% 200%;
+  animation: gradientBg 15s ease infinite;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.3);
+}
+
+/* Gradient animation */
+@keyframes gradientBg {
+  0% { background-position: 0% 50% }
+  50% { background-position: 100% 50% }
+  100% { background-position: 0% 50% }
+}
+
+/* Glowing effect for certain elements */
+.glow-effect {
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+}
+
+/* Cyber grid background - visible on certain sections */
+.cyber-grid {
+  background-image: 
+    linear-gradient(rgba(17, 24, 39, 0.8) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(17, 24, 39, 0.8) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1f2937;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #3B82F6, #8B5CF6);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #2563eb, #7c3aed);
 }

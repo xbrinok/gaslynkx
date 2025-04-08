@@ -9,18 +9,20 @@ import SuccessModal from "@/components/SuccessModal";
 import { TelegramAuth } from "@shared/schema";
 
 const Home: React.FC = () => {
-  const [telegramModalOpen, setTelegramModalOpen] = useState(false);
   const [walletModalOpen, setWalletModalOpen] = useState(false);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
-  const [telegramUser, setTelegramUser] = useState<TelegramAuth | null>(null);
+  // We'll use a mock user or null for direct wallet submission
+  const [mockUser] = useState<TelegramAuth | null>({
+    id: "12345",
+    first_name: "User",
+    username: "user",
+    photo_url: "",
+    auth_date: Math.floor(Date.now() / 1000),
+    hash: "mock-hash"
+  });
 
   const handleCheckEligibility = () => {
-    setTelegramModalOpen(true);
-  };
-
-  const handleTelegramSuccess = (user: TelegramAuth) => {
-    setTelegramUser(user);
-    setTelegramModalOpen(false);
+    // Open wallet modal directly
     setWalletModalOpen(true);
   };
 
@@ -30,23 +32,18 @@ const Home: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
+    <div className="min-h-screen flex flex-col bg-gray-900">
       <Hero onCheckEligibility={handleCheckEligibility} />
       <Features />
       <HowItWorks />
       <Footer />
       
-      <TelegramAuthModal 
-        isOpen={telegramModalOpen} 
-        onClose={() => setTelegramModalOpen(false)} 
-        onSuccess={handleTelegramSuccess}
-      />
-      
+      {/* We still keep the TelegramAuthModal in case we want to use it later */}
       <WalletAddressModal 
         isOpen={walletModalOpen} 
         onClose={() => setWalletModalOpen(false)} 
         onSubmit={handleWalletSubmit}
-        telegramUser={telegramUser}
+        telegramUser={mockUser}
       />
       
       <SuccessModal 

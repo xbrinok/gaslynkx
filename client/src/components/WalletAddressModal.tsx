@@ -78,29 +78,29 @@ const WalletAddressModal: React.FC<WalletAddressModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md bg-gray-800 border border-gray-700">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-center">Enter Your Solana Wallet</DialogTitle>
-          <DialogDescription className="text-center">
+          <DialogTitle className="text-2xl font-bold text-center text-white">Enter Your Solana Wallet</DialogTitle>
+          <DialogDescription className="text-center text-gray-300">
             Provide your Solana wallet address to receive benefits
           </DialogDescription>
         </DialogHeader>
         
         <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-4">
           <div>
-            <Label htmlFor="walletAddress" className="text-gray-700 font-medium">
+            <Label htmlFor="walletAddress" className="text-gray-200 font-medium">
               Solana Wallet Address
             </Label>
             <Input
               id="walletAddress"
               {...register("walletAddress")}
               placeholder="Enter your Solana wallet address"
-              className="w-full border border-gray-300 rounded-lg px-4 py-3 mt-2"
+              className="w-full border border-gray-600 bg-gray-700 text-white rounded-lg px-4 py-3 mt-2"
             />
             {errors.walletAddress && (
-              <p className="text-red-500 text-sm mt-1">{errors.walletAddress.message}</p>
+              <p className="text-red-400 text-sm mt-1">{errors.walletAddress.message}</p>
             )}
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-gray-400 mt-1">
               Example: 5KL6aEUNJCAyRsNt8Pk2YwXqmstbm6RKUHFRKR2Qcfpp
             </p>
           </div>
@@ -108,7 +108,7 @@ const WalletAddressModal: React.FC<WalletAddressModalProps> = ({
           <div className="pt-2">
             <Button 
               type="submit" 
-              className="w-full gradient-bg text-white py-6 border-none"
+              className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white py-4 rounded-lg text-lg font-medium transition-all duration-300"
               disabled={walletSubmitMutation.isPending}
             >
               {walletSubmitMutation.isPending ? "Submitting..." : "Submit Wallet Address"}

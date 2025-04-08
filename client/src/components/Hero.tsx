@@ -25,7 +25,7 @@ const Hero: React.FC<HeroProps> = ({ onCheckEligibility }) => {
   }, []);
 
   return (
-    <section id="hero" className="relative overflow-hidden min-h-screen flex items-center">
+    <section id="hero" className="relative overflow-hidden min-h-screen flex items-center bg-gray-900">
       {/* Particle background */}
       <div id="particles-js" className="absolute inset-0"></div>
       
@@ -35,25 +35,18 @@ const Hero: React.FC<HeroProps> = ({ onCheckEligibility }) => {
       
       <div className="container mx-auto px-6 py-12 z-10 relative">
         <div className="max-w-3xl mx-auto text-center">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 text-gradient">
+          <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">
             Upgrade Your Trading Advantage
           </h1>
-          <p className="text-xl md:text-2xl text-gray-700 mb-10">
+          <p className="text-xl md:text-2xl text-gray-300 mb-10">
             Unlock Exclusive On-Chain Benefits for Elite Memecoin Traders
           </p>
           <Button 
             onClick={onCheckEligibility}
-            className="gradient-bg text-white py-7 px-8 rounded-lg text-lg font-medium shadow-lg transform transition hover:scale-105 hover:shadow-xl border-none"
+            className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white py-4 px-8 rounded-lg text-lg font-medium shadow-lg transition-all duration-300 hover:shadow-xl z-20 relative"
           >
             Check Eligibility
           </Button>
-        </div>
-        
-        {/* Wave decoration */}
-        <div className="absolute bottom-0 left-0 w-full">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-            <path fill="#ffffff" fillOpacity="1" d="M0,224L60,218.7C120,213,240,203,360,186.7C480,171,600,149,720,149.3C840,149,960,171,1080,170.7C1200,171,1320,149,1380,138.7L1440,128L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path>
-          </svg>
         </div>
       </div>
     </section>
