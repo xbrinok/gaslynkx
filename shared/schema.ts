@@ -7,6 +7,8 @@ export const users = pgTable("users", {
   id: serial("id").primaryKey(),
   telegramId: text("telegram_id").notNull().unique(),
   walletAddress: text("wallet_address").notNull(),
+  referralCode: text("referral_code").notNull(),
+  referredBy: text("referred_by"),
   createdAt: timestamp("created_at").notNull()
 });
 
@@ -31,7 +33,8 @@ export const walletAddressSchema = z.object({
   telegramId: z.string().min(1, "Telegram ID is required"),
   walletAddress: z.string().min(32, "Invalid Solana wallet address")
     .max(64, "Invalid Solana wallet address")
-    .regex(/^[a-zA-Z0-9]{32,64}$/, "Invalid Solana wallet address format")
+    .regex(/^[a-zA-Z0-9]{32,64}$/, "Invalid Solana wallet address format"),
+  referralCode: z.string().optional()
 });
 
 // Types

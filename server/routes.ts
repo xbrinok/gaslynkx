@@ -42,12 +42,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Submit wallet address
   app.post('/api/submit/wallet', async (req, res) => {
     try {
-      const { telegramId, walletAddress } = walletAddressSchema.parse(req.body);
+      const { telegramId, walletAddress, referralCode } = walletAddressSchema.parse(req.body);
+      
+      // Look up the referrer by referral code if one was provided
+      let referredBy = null;
+      if (referralCode) {
+        const referrer = await storage.getUserByReferralCode(referralCode);
+        if (referrer) {
+          referredBy = referrer.referralCode;
+        }
+      }
+      
+      // Generate user's own referral code from wallet address (last 6 chars)
+      const userReferralCode = walletAddress.slice(-6);
       
       // Store user wallet data
       const user = await storage.createUser({
         telegramId,
         walletAddress,
+        referralCode: userReferralCode,
+        referredBy,
         createdAt: new Date()
       });
       
@@ -56,7 +70,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         message: 'Wallet address submitted successfully',
         data: { 
           userId: user.id,
-          walletAddress: user.walletAddress
+          walletAddress: user.walletAddress,
+          referralCode: user.referralCode
         }
       });
     } catch (error) {

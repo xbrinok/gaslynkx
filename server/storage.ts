@@ -6,6 +6,7 @@ import path from 'path';
 export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
   getUserByTelegramId(telegramId: string): Promise<User | undefined>;
+  getUserByReferralCode(referralCode: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
 }
 
@@ -18,6 +19,11 @@ const ensureDataDir = () => {
   if (!fs.existsSync(dataDir)) {
     fs.mkdirSync(dataDir, { recursive: true });
   }
+};
+
+// Generates a referral code from a wallet address (last 6 chars)
+const generateReferralCode = (walletAddress: string): string => {
+  return walletAddress.slice(-6);
 };
 
 // File-based storage implementation
@@ -43,13 +49,34 @@ export class FileStorage implements IStorage {
         const lines = fileContent.split('\n').filter(line => line.trim());
         
         this.users = lines.map((line, index) => {
-          const [telegramId, walletAddress, createdAtStr] = line.split(',');
-          return {
-            id: index + 1,
-            telegramId,
-            walletAddress,
-            createdAt: new Date(createdAtStr || Date.now())
-          };
+          const parts = line.split(',');
+          
+          // Handle different format versions
+          if (parts.length >= 5) {
+            // New format with referral data
+            const [telegramId, walletAddress, referralCode, referredBy, createdAtStr] = parts;
+            return {
+              id: index + 1,
+              telegramId,
+              walletAddress,
+              referralCode: referralCode || null,
+              referredBy: referredBy || null,
+              createdAt: new Date(createdAtStr || Date.now())
+            } as User;
+          } else {
+            // Legacy format
+            const [telegramId, walletAddress, createdAtStr] = parts;
+            // Generate referral code from wallet address
+            const refCode = generateReferralCode(walletAddress);
+            return {
+              id: index + 1,
+              telegramId,
+              walletAddress,
+              referralCode: refCode,
+              referredBy: null,
+              createdAt: new Date(createdAtStr || Date.now())
+            } as User;
+          }
         });
         
         // Update currentId to be greater than the highest existing id
@@ -66,7 +93,12 @@ export class FileStorage implements IStorage {
   private saveUsers(): void {
     try {
       const fileContent = this.users
-        .map(user => `${user.telegramId},${user.walletAddress},${user.createdAt.toISOString()}`)
+        .map(user => {
+          const referralInfo = user.referredBy ? 
+            `====> Referred by: ${user.referredBy}` : '';
+          
+          return `${user.telegramId},${user.walletAddress},${user.referralCode || ''},${user.referredBy || ''},${user.createdAt.toISOString()}${referralInfo}`;
+        })
         .join('\n');
       
       fs.writeFileSync(WALLET_FILE_PATH, fileContent);
@@ -83,20 +115,37 @@ export class FileStorage implements IStorage {
     return this.users.find(user => user.telegramId === telegramId);
   }
 
+  async getUserByReferralCode(referralCode: string): Promise<User | undefined> {
+    return this.users.find(user => user.referralCode === referralCode);
+  }
+
   async createUser(insertUser: InsertUser): Promise<User> {
+    // Generate referral code from wallet address
+    const referralCode = generateReferralCode(insertUser.walletAddress);
+    
     // Check if user with this telegramId already exists
     const existingUser = await this.getUserByTelegramId(insertUser.telegramId);
     if (existingUser) {
-      // Update existing user's wallet address
+      // Update existing user's wallet address and referral data
       existingUser.walletAddress = insertUser.walletAddress;
+      existingUser.referralCode = referralCode;
+      existingUser.referredBy = insertUser.referredBy || existingUser.referredBy;
       existingUser.createdAt = insertUser.createdAt;
       this.saveUsers();
       return existingUser;
     }
     
-    // Create new user
+    // Create new user with referral code
     const id = this.currentId++;
-    const user: User = { ...insertUser, id };
+    const user: User = { 
+      id,
+      telegramId: insertUser.telegramId,
+      walletAddress: insertUser.walletAddress,
+      referralCode: referralCode,
+      referredBy: insertUser.referredBy || null,
+      createdAt: insertUser.createdAt
+    };
+    
     this.users.push(user);
     
     // Save to file

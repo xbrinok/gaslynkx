@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -34,6 +34,22 @@ const WalletAddressModal: React.FC<WalletAddressModalProps> = ({
   telegramUser 
 }) => {
   const { toast } = useToast();
+  const [referralCode, setReferralCode] = useState<string | null>(null);
+  
+  // Extract referral code from URL when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      try {
+        const searchParams = new URLSearchParams(window.location.search);
+        const ref = searchParams.get('ref');
+        if (ref) {
+          setReferralCode(ref);
+        }
+      } catch (error) {
+        console.error("Error parsing URL params:", error);
+      }
+    }
+  }, [isOpen]);
   
   const { register, handleSubmit, formState: { errors } } = useForm<WalletFormValues>({
     resolver: zodResolver(walletFormSchema),
@@ -50,17 +66,22 @@ const WalletAddressModal: React.FC<WalletAddressModalProps> = ({
       
       const payload = {
         telegramId: telegramUser.id,
-        walletAddress: data.walletAddress
+        walletAddress: data.walletAddress,
+        referralCode: referralCode
       };
       
       const response = await apiRequest('POST', '/api/submit/wallet', payload);
       return response.json();
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       toast({
         title: "Wallet Submitted Successfully",
         description: "Your wallet address has been registered.",
       });
+      // Store the referral code in local storage for the success modal
+      if (data?.data?.referralCode) {
+        localStorage.setItem('userReferralCode', data.data.referralCode);
+      }
       onSubmit();
     },
     onError: (error) => {
@@ -91,12 +112,26 @@ const WalletAddressModal: React.FC<WalletAddressModalProps> = ({
         {telegramUser && (
           <div className="rounded-lg border border-green-500/20 bg-green-500/5 p-3 flex items-center mb-6">
             <div className="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center mr-3">
-              <i className="fas fa-check text-green-400"></i>
+              <i className="fab fa-telegram-plane text-teal-400"></i>
             </div>
             <div>
               <p className="text-sm text-white flex items-center">
                 <span className="font-medium">Telegram Verified</span>
                 <i className="fas fa-check-circle text-green-400 ml-2"></i>
+              </p>
+            </div>
+          </div>
+        )}
+        
+        {referralCode && (
+          <div className="rounded-lg border border-purple-500/20 bg-purple-500/5 p-3 flex items-center mb-6">
+            <div className="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center mr-3">
+              <i className="fas fa-user-friends text-purple-400"></i>
+            </div>
+            <div>
+              <p className="text-sm text-white">
+                <span className="font-medium">Referred by:</span>
+                <span className="ml-2 font-mono text-xs bg-gray-700 rounded px-2 py-1">{referralCode}</span>
               </p>
             </div>
           </div>
