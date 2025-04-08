@@ -56,8 +56,8 @@ const ReferralTracker: React.FC = () => {
 
   if (!isAuthorized) {
     return (
-      <div className="container mx-auto px-4 py-16 min-h-screen flex flex-col items-center justify-center bg-gray-900">
-        <div className="max-w-md w-full bg-gray-800 p-8 rounded-lg border border-gray-700 shadow-xl">
+      <div className="container mx-auto px-4 py-16 min-h-screen flex flex-col items-center justify-center bg-gray-900 relative z-10">
+        <div className="max-w-md w-full bg-gray-800 p-8 rounded-lg border border-gray-700 shadow-xl relative z-20">
           <h1 className="text-3xl font-bold mb-6 text-center text-white">
             Referral <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">Tracker</span>
           </h1>
@@ -102,7 +102,7 @@ const ReferralTracker: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="container mx-auto px-4 py-16 min-h-screen flex flex-col items-center justify-center bg-gray-900">
+      <div className="container mx-auto px-4 py-16 min-h-screen flex flex-col items-center justify-center bg-gray-900 relative z-10">
         <Web3LoadingSpinner size="large" text="Loading referral data..." />
       </div>
     );
@@ -110,8 +110,8 @@ const ReferralTracker: React.FC = () => {
 
   if (error) {
     return (
-      <div className="container mx-auto px-4 py-16 min-h-screen flex flex-col items-center justify-center bg-gray-900">
-        <div className="max-w-lg text-center">
+      <div className="container mx-auto px-4 py-16 min-h-screen flex flex-col items-center justify-center bg-gray-900 relative z-10">
+        <div className="max-w-lg text-center relative z-20">
           <h2 className="text-2xl font-bold text-red-400 mb-4">Error Loading Data</h2>
           <p className="text-gray-300 mb-8">
             There was a problem loading the referral data. Please try again later.
@@ -146,8 +146,8 @@ const ReferralTracker: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-16 min-h-screen bg-gray-900">
-      <div className="max-w-6xl mx-auto">
+    <div className="container mx-auto px-4 py-16 min-h-screen bg-gray-900 relative z-10">
+      <div className="max-w-6xl mx-auto relative z-20">
         <header className="mb-12">
           <h1 className="text-4xl font-bold mb-4 text-white">
             Referral <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">Analytics</span>
