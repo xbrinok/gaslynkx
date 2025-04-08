@@ -3,7 +3,6 @@ import { useQuery } from '@tanstack/react-query';
 import { apiRequest } from '@/lib/queryClient';
 import Web3LoadingSpinner from '@/components/Web3LoadingSpinner';
 import { AlertCircle, ArrowRight } from 'lucide-react';
-import { initParticles } from '@/lib/particles-config';
 
 interface Referral {
   referrer: string;
@@ -53,22 +52,12 @@ const ReferralTracker: React.FC = () => {
     });
   }, []);
   
-  // Initialize particles.js when authorized
-  useEffect(() => {
-    if (isAuthorized) {
-      // Short delay to ensure DOM is ready
-      setTimeout(() => {
-        initParticles();
-      }, 100);
-    }
-  }, [isAuthorized]);
+  // Removed particle.js initialization for admin page as requested
 
   if (!isAuthorized) {
     return (
-      <div className="container mx-auto px-4 py-16 min-h-screen flex flex-col items-center justify-center bg-gray-900 relative z-10">
-        {/* Add particle.js background */}
-        <div className="absolute inset-0 -z-10 opacity-30" id="particles-js"></div>
-        <div className="animate-on-mount opacity-0 max-w-md w-full bg-gray-800/80 backdrop-blur-sm p-8 rounded-lg border border-gray-700 shadow-xl relative z-10">
+      <div className="container mx-auto px-4 py-16 min-h-screen flex flex-col items-center justify-center bg-gray-900">
+        <div className="animate-on-mount opacity-0 max-w-md w-full bg-gray-800 p-8 rounded-lg border border-gray-700 shadow-xl">
           <h1 className="text-3xl font-bold mb-6 text-center text-white">
             Referral <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">Tracker</span>
           </h1>
@@ -113,9 +102,7 @@ const ReferralTracker: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="container mx-auto px-4 py-16 min-h-screen flex flex-col items-center justify-center bg-gray-900 relative z-10">
-        {/* Add particle.js background */}
-        <div className="absolute inset-0 -z-10 opacity-30" id="particles-js"></div>
+      <div className="container mx-auto px-4 py-16 min-h-screen flex flex-col items-center justify-center bg-gray-900">
         <Web3LoadingSpinner size="large" text="Loading referral data..." />
       </div>
     );
@@ -123,10 +110,8 @@ const ReferralTracker: React.FC = () => {
 
   if (error) {
     return (
-      <div className="container mx-auto px-4 py-16 min-h-screen flex flex-col items-center justify-center bg-gray-900 relative z-10">
-        {/* Add particle.js background */}
-        <div className="absolute inset-0 -z-10 opacity-30" id="particles-js"></div>
-        <div className="max-w-lg text-center relative z-10">
+      <div className="container mx-auto px-4 py-16 min-h-screen flex flex-col items-center justify-center bg-gray-900">
+        <div className="max-w-lg text-center">
           <h2 className="text-2xl font-bold text-red-400 mb-4">Error Loading Data</h2>
           <p className="text-gray-300 mb-8">
             There was a problem loading the referral data. Please try again later.
@@ -161,10 +146,8 @@ const ReferralTracker: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-16 min-h-screen bg-gray-900 relative z-10">
-      {/* Add particle.js background */}
-      <div className="absolute inset-0 -z-10 opacity-30" id="particles-js"></div>
-      <div className="max-w-6xl mx-auto relative z-10">
+    <div className="container mx-auto px-4 py-16 min-h-screen bg-gray-900">
+      <div className="max-w-6xl mx-auto">
         <header className="mb-12 animate-on-mount opacity-0">
           <h1 className="text-4xl font-bold mb-4 text-white">
             Referral <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">Analytics</span>
