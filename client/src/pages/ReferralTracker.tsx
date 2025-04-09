@@ -134,16 +134,9 @@ const ReferralTracker: React.FC = () => {
   
   console.log("API data received:", data);
   
-  // If no data from API, use sample data
-  let displayWalletList = [...walletList];
-  if (displayWalletList.length === 0) {
-    console.log("No wallet data found, using sample data");
-    displayWalletList = [
-      "5KL6aEUNJCAyRsNt8Pk2YwXqmstbm6RKUHFRK546no3m",
-      "71L8bAJLKcAyRsNt8Pk2YwXqmstbm6RKUHFR2Qcfpp",
-      "5KL6aEUNJCAyRsNt8Pk2YwXqmstbm6RKUHFRK546no3m ===> 2Qcfpp"
-    ];
-  }
+  // Use the wallet list from the API
+  // Server will provide sample data if real data isn't available
+  const displayWalletList = [...walletList];
 
   return (
     <div className="container mx-auto px-4 py-16 min-h-screen bg-gray-900 relative z-10">

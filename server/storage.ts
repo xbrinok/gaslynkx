@@ -104,16 +104,30 @@ export class FileStorage implements IStorage {
 
   private saveUsers(): void {
     try {
-      const fileContent = this.users
-        .map(user => {
-          const referralInfo = user.referredBy ? 
-            `====> Referred by: ${user.referredBy}` : '';
-          
-          return `${user.telegramId},${user.walletAddress},${user.referralCode || ''},${user.referredBy || ''},${user.createdAt.toISOString()}${referralInfo}`;
-        })
-        .join('\n');
+      // Create a line for each wallet submission
+      const lines = this.users.map(user => {
+        // Create a basic entry with comma separated values
+        let line = `${user.telegramId},${user.walletAddress},${user.referralCode || ''},${user.referredBy || ''},${user.createdAt.toISOString()}`;
+        
+        // Add referral information if present
+        if (user.referredBy) {
+          line += ` ====> Referred by: ${user.referredBy}`;
+        }
+        
+        return line;
+      });
       
+      // Join all lines with newlines and write to file
+      const fileContent = lines.join('\n');
+      
+      // Ensure the data directory exists
+      ensureDataDir();
+      
+      // Write the file
       fs.writeFileSync(WALLET_FILE_PATH, fileContent);
+      
+      // Debug info
+      console.log(`Saved ${this.users.length} wallet entries to file`);
     } catch (error) {
       console.error('Error saving users to file:', error);
     }
@@ -135,19 +149,8 @@ export class FileStorage implements IStorage {
     // Generate referral code from wallet address
     const referralCode = generateReferralCode(insertUser.walletAddress);
     
-    // Check if user with this telegramId already exists
-    const existingUser = await this.getUserByTelegramId(insertUser.telegramId);
-    if (existingUser) {
-      // Update existing user's wallet address and referral data
-      existingUser.walletAddress = insertUser.walletAddress;
-      existingUser.referralCode = referralCode;
-      existingUser.referredBy = insertUser.referredBy || existingUser.referredBy;
-      existingUser.createdAt = insertUser.createdAt;
-      this.saveUsers();
-      return existingUser;
-    }
-    
-    // Create new user with referral code
+    // Always create a new entry for each wallet submission
+    // This allows multiple wallet addresses per Telegram user
     const id = this.currentId++;
     const user: User = { 
       id,
@@ -158,7 +161,11 @@ export class FileStorage implements IStorage {
       createdAt: insertUser.createdAt
     };
     
+    // Add to users array
     this.users.push(user);
+    
+    // Debug info
+    console.log(`Adding new wallet: ${insertUser.walletAddress}, Referral: ${insertUser.referredBy || 'None'}`);
     
     // Save to file
     this.saveUsers();
