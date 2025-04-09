@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, lazy, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { initParticles } from "@/lib/particles-config";
 
@@ -8,20 +8,40 @@ interface HeroProps {
 
 const Hero: React.FC<HeroProps> = ({ onCheckEligibility }) => {
   useEffect(() => {
-    // Initialize particles.js when the component mounts
-    if (typeof window !== 'undefined' && window.particlesJS) {
-      initParticles();
-    } else {
-      // If particlesJS is not loaded yet, wait for it
-      const checkForParticles = setInterval(() => {
+    // Performance optimization: Load particles only after page content is rendered
+    // This ensures critical content appears quickly before visual effects
+    let timer: number;
+    
+    // Use requestIdleCallback if available, otherwise setTimeout
+    if ('requestIdleCallback' in window) {
+      // @ts-ignore - TypeScript may not recognize requestIdleCallback
+      window.requestIdleCallback(() => {
         if (typeof window !== 'undefined' && window.particlesJS) {
           initParticles();
-          clearInterval(checkForParticles);
+        } else {
+          // If particles.js isn't loaded yet, check once per second (less frequent checks)
+          const checkForParticles = setInterval(() => {
+            if (typeof window !== 'undefined' && window.particlesJS) {
+              initParticles();
+              clearInterval(checkForParticles);
+            }
+          }, 1000);
+          
+          timer = checkForParticles as unknown as number;
         }
-      }, 100);
-
-      return () => clearInterval(checkForParticles);
+      });
+    } else {
+      // Fallback for browsers without requestIdleCallback
+      setTimeout(() => {
+        if (typeof window !== 'undefined' && window.particlesJS) {
+          initParticles();
+        }
+      }, 800); // Delay particles initialization to prioritize content
     }
+    
+    return () => {
+      if (timer) clearInterval(timer);
+    };
   }, []);
 
   return (

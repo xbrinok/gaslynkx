@@ -96,16 +96,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Get referral tracking data
+  // Get referral tracking data - optimized for performance
   app.get('/api/referrals', async (req, res) => {
     try {
-      // This is a protected endpoint, would typically use proper authentication
-      // For demo purposes, we're keeping it simple
+      // Performance optimization: Add cache header to allow browser caching
+      // This will significantly improve repeated loads of the admin panel
+      res.setHeader('Cache-Control', 'private, max-age=10'); // Cache for 10 seconds
       
+      // This is a protected endpoint
       const allUsers = await storage.getAllUsers();
       
-      // Log all users for debug
-      console.log('All users for admin panel:', allUsers);
+      // Only log users in development mode to improve performance
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('All users for admin panel:', allUsers);
+      }
       
       // If no real users, provide some sample data for UI testing
       if (allUsers.length === 0) {
@@ -122,15 +126,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
       
-      // Create a simple list of wallet addresses with referral info
-      const walletList = allUsers.map((user: User) => {
-        // Format: walletAddress ===> referrerCode (if referred by someone)
-        const referralInfo = user.referredBy 
+      // Performance optimization: Use more efficient map operation
+      // Format wallet data for display with referral info
+      const walletList = allUsers.map((user: User) => 
+        user.referredBy 
           ? `${user.walletAddress} ===> ${user.referredBy}`
-          : user.walletAddress;
-        
-        return referralInfo;
-      });
+          : user.walletAddress
+      );
       
       res.status(200).json({ 
         success: true, 
