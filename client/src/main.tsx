@@ -35,17 +35,8 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { has
   render() {
     if (this.state.hasError) {
       return (
-        <div className="error-screen flex items-center justify-center min-h-screen bg-gray-900 p-4 text-center">
-          <div>
-            <h1 className="text-2xl font-bold text-red-400 mb-4">Something went wrong</h1>
-            <p className="text-gray-300 mb-6">The application encountered an error. Please refresh the page.</p>
-            <button 
-              onClick={() => window.location.reload()} 
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
-            >
-              Refresh
-            </button>
-          </div>
+        <div className="error-screen flex items-center justify-center min-h-screen bg-gray-900">
+          <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
         </div>
       );
     }

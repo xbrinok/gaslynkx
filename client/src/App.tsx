@@ -9,13 +9,10 @@ import { memo } from "react";
 const Home = lazy(() => import("@/pages/Home"));
 const ReferralTracker = lazy(() => import("@/pages/ReferralTracker"));
 
-// Loading spinner for lazy-loaded components
+// Loading spinner for lazy-loaded components - just the spinner without text
 const PageLoading = () => (
   <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-    <div className="text-center">
-      <div className="w-10 h-10 border-3 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
-      <p className="text-gray-300">Loading page...</p>
-    </div>
+    <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
   </div>
 );
 
