@@ -4,21 +4,12 @@ import { apiRequest } from '@/lib/queryClient';
 import Web3LoadingSpinner from '@/components/Web3LoadingSpinner';
 import { AlertCircle, ArrowRight } from 'lucide-react';
 
-interface Referral {
-  referrer: string;
-  referred: string[];
-}
-
 interface ApiResponse {
   success: boolean;
   message: string;
   data: {
-    referrals: Referral[];
+    walletList: string[];
   };
-}
-
-interface ReferralData {
-  referrals: Referral[];
 }
 
 const ReferralTracker: React.FC = () => {
@@ -34,13 +25,23 @@ const ReferralTracker: React.FC = () => {
 
   const handlePasswordSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === 'admin123') { // Simple password for demo purposes
+    if (password === 'solana2025$') { // Updated password as requested
       setIsAuthorized(true);
+      // Store auth state in localStorage to persist between refreshes
+      localStorage.setItem('referralAdmin', 'authorized');
       setErrorMessage('');
     } else {
       setErrorMessage('Invalid password');
     }
   };
+  
+  // Check for saved auth state when component mounts
+  useEffect(() => {
+    const savedAuth = localStorage.getItem('referralAdmin');
+    if (savedAuth === 'authorized') {
+      setIsAuthorized(true);
+    }
+  }, []);
 
   useEffect(() => {
     // For admin panel, don't use animations but ensure content is visible
@@ -127,89 +128,48 @@ const ReferralTracker: React.FC = () => {
     );
   }
 
-  // Use API data when available, otherwise use fallback data
-  const referralData: ReferralData = {
-    referrals: data?.data?.referrals || [
-      {
-        referrer: "SolWa...ab15c",
-        referred: ["SolWa...e92a1", "SolWa...f83b2"]
-      },
-      {
-        referrer: "SolWa...d72e4",
-        referred: ["SolWa...c61a5"]
-      },
-      {
-        referrer: "SolWa...9b3c7",
-        referred: ["SolWa...a25d8", "SolWa...b14e9", "SolWa...c35f0"]
-      }
-    ]
-  };
+  // Get wallet addresses from API data
+  const walletList = data?.data?.walletList || [];
 
   return (
     <div className="container mx-auto px-4 py-16 min-h-screen bg-gray-900 relative z-10">
       <div className="max-w-6xl mx-auto relative z-20">
-        <header className="mb-12">
+        <header className="mb-8">
           <h1 className="text-4xl font-bold mb-4 text-white">
-            Referral <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">Analytics</span>
+            Wallet <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">Addresses</span>
           </h1>
           <p className="text-xl text-gray-300">
-            Track and analyze the effectiveness of your referral program
+            All registered wallet addresses with referral info
           </p>
         </header>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-          <div className="bg-gray-800 p-6 rounded-lg border border-gray-700 shadow-lg">
-            <h3 className="text-xl font-medium mb-2 text-white">Total Referrers</h3>
-            <p className="text-4xl font-bold text-blue-400">
-              {referralData.referrals.length}
-            </p>
-          </div>
-          
-          <div className="bg-gray-800 p-6 rounded-lg border border-gray-700 shadow-lg">
-            <h3 className="text-xl font-medium mb-2 text-white">Total Referrals</h3>
-            <p className="text-4xl font-bold text-purple-400">
-              {referralData.referrals.reduce((acc, item) => acc + item.referred.length, 0)}
-            </p>
-          </div>
-          
-          <div className="bg-gray-800 p-6 rounded-lg border border-gray-700 shadow-lg">
-            <h3 className="text-xl font-medium mb-2 text-white">Conversion Rate</h3>
-            <p className="text-4xl font-bold text-green-400">85%</p>
-          </div>
-        </div>
         
         <div className="bg-gray-800 rounded-lg border border-gray-700 p-6 shadow-lg mb-8">
-          <h2 className="text-2xl font-bold mb-6 text-white">Referral Connections</h2>
+          <h2 className="text-2xl font-bold mb-6 text-white">Wallet List</h2>
           
-          <div className="space-y-6">
-            {referralData.referrals.map((item, index) => (
-              <div key={index}>
-                <div className="flex items-center mb-3">
-                  <div className="w-12 h-12 flex items-center justify-center rounded-full bg-blue-500/20 mr-4">
-                    <span className="text-blue-400 font-medium">{index + 1}</span>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-medium text-white">{item.referrer}</h3>
-                    <p className="text-sm text-gray-400">{item.referred.length} referrals</p>
-                  </div>
+          <div className="space-y-2 max-h-[70vh] overflow-y-auto pr-2 custom-scrollbar">
+            {walletList.length > 0 ? (
+              walletList.map((walletInfo, index) => (
+                <div 
+                  key={index} 
+                  className="flex items-center py-3 px-4 bg-gray-700/50 rounded-md text-lg font-mono"
+                >
+                  <span className="text-gray-300 break-all">{walletInfo}</span>
                 </div>
-                
-                <div className="ml-16 space-y-3">
-                  {item.referred.map((ref, refIndex) => (
-                    <div key={refIndex} className="flex items-center py-2 px-4 bg-gray-700/50 rounded-md">
-                      <ArrowRight className="h-4 w-4 text-blue-400 mr-3" />
-                      <span className="text-gray-300">{ref}</span>
-                    </div>
-                  ))}
-                </div>
+              ))
+            ) : (
+              <div className="text-center py-8">
+                <p className="text-gray-400">No wallet addresses found</p>
               </div>
-            ))}
+            )}
           </div>
         </div>
         
         <div className="text-center">
           <button
-            onClick={() => setIsAuthorized(false)}
+            onClick={() => {
+              setIsAuthorized(false);
+              localStorage.removeItem('referralAdmin');
+            }}
             className="px-6 py-3 bg-gray-700 text-gray-300 rounded-md hover:bg-gray-600 transition-all duration-300"
           >
             Log Out

@@ -104,38 +104,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       const allUsers = await storage.getAllUsers();
       
-      // Group users by referrers
-      const referralMap = new Map();
-      
-      // First, identify all referrers
-      allUsers.forEach((user: User) => {
-        if (user.referralCode && !referralMap.has(user.referralCode)) {
-          referralMap.set(user.referralCode, {
-            referrer: user.walletAddress.slice(0, 5) + '...' + user.walletAddress.slice(-5),
-            referred: []
-          });
-        }
+      // Create a simple list of wallet addresses with referral info
+      const walletData = allUsers.map((user: User) => {
+        // Format: walletAddress ===> referrerCode (if referred by someone)
+        const referralInfo = user.referredBy 
+          ? `${user.walletAddress} ===> ${user.referredBy}`
+          : user.walletAddress;
+          
+        return {
+          walletInfo: referralInfo,
+          referralCode: user.referralCode,
+          hasReferrals: false, // We'll update this below
+          referredAddresses: [] as string[] // Will store addresses this user referred
+        };
       });
       
-      // Then, add referred users to their referrers
+      // Mark which users have referred others
       allUsers.forEach((user: User) => {
-        if (user.referredBy && referralMap.has(user.referredBy)) {
-          const maskedWallet = user.walletAddress.slice(0, 5) + '...' + user.walletAddress.slice(-5);
-          const referrer = referralMap.get(user.referredBy);
-          if (referrer && referrer.referred) {
-            referrer.referred.push(maskedWallet);
+        if (user.referredBy) {
+          // Find the user who referred this one
+          const referrer = walletData.find(w => w.referralCode === user.referredBy);
+          if (referrer) {
+            referrer.hasReferrals = true;
+            referrer.referredAddresses.push(user.walletAddress);
           }
         }
       });
       
-      // Convert map to array for response
-      const referrals = Array.from(referralMap.values())
-        .filter(item => item.referred.length > 0); // Only include referrers who have referrals
+      // Just send the simple list with all wallet addresses and their referral info
+      const walletList = walletData.map(item => item.walletInfo);
       
       res.status(200).json({ 
         success: true, 
         message: 'Referral data retrieved successfully',
-        data: { referrals }
+        data: { walletList }
       });
     } catch (error) {
       res.status(500).json({ 
