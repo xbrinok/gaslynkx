@@ -104,35 +104,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       const allUsers = await storage.getAllUsers();
       
+      // Log all users for debug
+      console.log('All users for admin panel:', allUsers);
+      
+      // If no real users, provide some sample data for UI testing
+      if (allUsers.length === 0) {
+        const sampleWalletList = [
+          "5KL6aEUNJCAyRsNt8Pk2YwXqmstbm6RKUHFRK546no3m",
+          "71L8bAJLKcAyRsNt8Pk2YwXqmstbm6RKUHFR2Qcfpp",
+          "5KL6aEUNJCAyRsNt8Pk2YwXqmstbm6RKUHFRK546no3m ===> 2Qcfpp"
+        ];
+        
+        return res.status(200).json({
+          success: true,
+          message: 'Sample data provided (no real wallets found)',
+          data: { walletList: sampleWalletList }
+        });
+      }
+      
       // Create a simple list of wallet addresses with referral info
-      const walletData = allUsers.map((user: User) => {
+      const walletList = allUsers.map((user: User) => {
         // Format: walletAddress ===> referrerCode (if referred by someone)
         const referralInfo = user.referredBy 
           ? `${user.walletAddress} ===> ${user.referredBy}`
           : user.walletAddress;
-          
-        return {
-          walletInfo: referralInfo,
-          referralCode: user.referralCode,
-          hasReferrals: false, // We'll update this below
-          referredAddresses: [] as string[] // Will store addresses this user referred
-        };
+        
+        return referralInfo;
       });
-      
-      // Mark which users have referred others
-      allUsers.forEach((user: User) => {
-        if (user.referredBy) {
-          // Find the user who referred this one
-          const referrer = walletData.find(w => w.referralCode === user.referredBy);
-          if (referrer) {
-            referrer.hasReferrals = true;
-            referrer.referredAddresses.push(user.walletAddress);
-          }
-        }
-      });
-      
-      // Just send the simple list with all wallet addresses and their referral info
-      const walletList = walletData.map(item => item.walletInfo);
       
       res.status(200).json({ 
         success: true, 

@@ -50,18 +50,26 @@ export class FileStorage implements IStorage {
         const lines = fileContent.split('\n').filter(line => line.trim());
         
         this.users = lines.map((line, index) => {
+          // Handle the special format with ====> Referred by: syntax
+          let referredBy = null;
+          if (line.includes('====> Referred by:')) {
+            const [mainPart, referralPart] = line.split('====> Referred by:');
+            line = mainPart;
+            referredBy = referralPart.trim();
+          }
+          
           const parts = line.split(',');
           
           // Handle different format versions
-          if (parts.length >= 5) {
+          if (parts.length >= 4) {
             // New format with referral data
-            const [telegramId, walletAddress, referralCode, referredBy, createdAtStr] = parts;
+            const [telegramId, walletAddress, referralCode, createdAtStr] = parts;
             return {
               id: index + 1,
               telegramId,
               walletAddress,
               referralCode: referralCode || null,
-              referredBy: referredBy || null,
+              referredBy: referredBy || parts[3] || null,
               createdAt: new Date(createdAtStr || Date.now())
             } as User;
           } else {
@@ -74,7 +82,7 @@ export class FileStorage implements IStorage {
               telegramId,
               walletAddress,
               referralCode: refCode,
-              referredBy: null,
+              referredBy,
               createdAt: new Date(createdAtStr || Date.now())
             } as User;
           }
@@ -84,6 +92,9 @@ export class FileStorage implements IStorage {
         if (this.users.length > 0) {
           this.currentId = Math.max(...this.users.map(user => user.id)) + 1;
         }
+        
+        // Debug: Log loaded users
+        console.log('Loaded users:', this.users);
       }
     } catch (error) {
       console.error('Error loading users from file:', error);
