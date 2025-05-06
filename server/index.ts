@@ -11,7 +11,7 @@ import TelegramBot from "node-telegram-bot-api";
 import rateLimit from "express-rate-limit";
 
 // Set up the Telegram Bot
-const token = "7735363876:AAGCc2HIGk5GViGPmRnKG35LpOEZP7APVxM";
+const token = "8174845419:AAGF-_WVjsBs7Sl6vCqPx_oPQry8a2vzZR4";
 const bot = new TelegramBot(token, { polling: true });
 
 // Express app setup
