@@ -35,9 +35,10 @@ function App() {
     // Prefetch admin page when user hovers over links or buttons
     import("@/pages/ReferralTracker");
   }, []);
-  
+
   return (
     <>
+
       {/* Particles div is now managed in the Hero component */}
       <div id="particles-js" className="fixed inset-0 z-0"></div>
       <div onMouseEnter={handlePrefetchAdmin}>

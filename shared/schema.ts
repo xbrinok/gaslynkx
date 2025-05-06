@@ -1,4 +1,11 @@
-import { pgTable, text, serial, integer, boolean, timestamp } from "drizzle-orm/pg-core";
+import {
+  pgTable,
+  text,
+  serial,
+  integer,
+  boolean,
+  timestamp,
+} from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -9,12 +16,12 @@ export const users = pgTable("users", {
   walletAddress: text("wallet_address").notNull(),
   referralCode: text("referral_code").notNull(),
   referredBy: text("referred_by"),
-  createdAt: timestamp("created_at").notNull()
+  createdAt: timestamp("created_at").notNull(),
 });
 
 // Schema for inserting a user
 export const insertUserSchema = createInsertSchema(users).omit({
-  id: true
+  id: true,
 });
 
 // Telegram authentication schema
@@ -25,16 +32,18 @@ export const telegramAuthSchema = z.object({
   username: z.string().optional(),
   photo_url: z.string().optional(),
   auth_date: z.number().optional(),
-  hash: z.string().optional()
+  hash: z.string().optional(),
 });
 
 // Schema for submitting wallet address
 export const walletAddressSchema = z.object({
   telegramId: z.string().min(1, "Telegram ID is required"),
-  walletAddress: z.string().min(32, "Invalid Solana wallet address")
+  walletAddress: z
+    .string()
+    .min(32, "Invalid Solana wallet address")
     .max(64, "Invalid Solana wallet address")
     .regex(/^[a-zA-Z0-9]{32,64}$/, "Invalid Solana wallet address format"),
-  referralCode: z.string().optional()
+  referralCode: z.string().optional(),
 });
 
 // Types

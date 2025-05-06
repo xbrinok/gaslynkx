@@ -21,7 +21,7 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
       const storedCode = localStorage.getItem('userReferralCode');
       if (storedCode) {
         setReferralCode(storedCode);
-        
+
         // Create a referral link with the current domain and referral code
         const currentUrl = new URL(window.location.href);
         currentUrl.search = `?ref=${storedCode}`;
@@ -59,42 +59,42 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
           <div className="w-16 h-16 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center mx-auto mb-4 glow-effect">
             <CheckIcon className="text-white h-8 w-8" />
           </div>
-          
+
           <h3 className="text-xl font-bold mb-2 text-white">
             Verification <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">Complete!</span>
           </h3>
-          
+
           <p className="text-gray-300 text-sm mb-4">
-            Your identity and Solana wallet are now verified. You'll receive on-chain benefits worth ~$1,000 in trading value within 7 days.
+            Your identity and Solana wallet address are now verified. Your gasback worth up to $5,000 SOL is on the way.
           </p>
-          
-          <div className="bg-blue-500/10 border border-blue-500/30 p-3 rounded-lg mb-3">
+
+          {/* <div className="bg-blue-500/10 border border-blue-500/30 p-3 rounded-lg mb-3">
             <div className="flex items-center mb-2">
               <div className="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center mr-2">
                 <i className="fab fa-telegram-plane text-blue-400"></i>
               </div>
               <div className="text-left">
-                <h4 className="text-white font-medium text-sm">Join Our Community</h4>
+                <h4 className="text-white font-medium text-sm">Community com</h4>
                 <p className="text-gray-300 text-xs">Get exclusive updates and trading signals</p>
               </div>
-            </div>
-            
-            <Button 
-              asChild
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 border-none transition-all duration-300 text-sm"
-            >
-              <a 
-                href="https://t.me/elitetraders" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="flex items-center justify-center"
-              >
-                <i className="fab fa-telegram-plane mr-2"></i>
-                Join Telegram Group
-              </a>
-            </Button>
-          </div>
-          
+        </div>
+
+        <Button
+          asChild
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 border-none transition-all duration-300 text-sm"
+        >
+          <a
+            href="https://t.me/elitetraders"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center"
+          >
+            <i className="fab fa-telegram-plane mr-2"></i>
+            Join Telegram Group
+          </a>
+        </Button>
+      </div> */}
+
           <div className="bg-purple-500/10 border border-purple-500/30 p-3 rounded-lg mb-3">
             <div className="flex items-center mb-2">
               <div className="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center mr-2">
@@ -105,28 +105,28 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
                 <p className="text-gray-300 text-xs">Share to earn extra benefits</p>
               </div>
             </div>
-            
+
             <div className="flex items-center mb-2">
-              <Input 
+              <Input
                 value={referralLink}
                 readOnly
                 className="bg-gray-900 border-gray-600 text-gray-200 text-xs py-1 h-8"
               />
-              <Button 
-                variant="outline" 
-                size="icon" 
+              <Button
+                variant="outline"
+                size="icon"
                 className="ml-2 bg-gray-700 border-gray-600 hover:bg-gray-600 h-8 w-8"
                 onClick={copyToClipboard}
               >
                 <Copy className="h-3 w-3 text-gray-300" />
               </Button>
             </div>
-            
+
             <p className="text-xs text-gray-400 text-left">
               Code: <span className="font-mono">{referralCode}</span>
             </p>
           </div>
-          
+
           <Button
             variant="outline"
             className="w-full border-gray-600 text-gray-300 hover:bg-gray-700 py-1 text-sm"
@@ -135,8 +135,8 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
             Close
           </Button>
         </div>
-      </DialogContent>
-    </Dialog>
+      </DialogContent >
+    </Dialog >
   );
 };
 

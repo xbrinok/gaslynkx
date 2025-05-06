@@ -40,12 +40,12 @@ const HowItWorks: React.FC = () => {
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-white">
           How It <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">Works</span>
         </h2>
-        
+
         <div className="max-w-4xl mx-auto">
           <div className="relative">
             {/* Vertical line for desktop */}
             <div className="hidden md:block absolute left-[30px] top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500 to-purple-600 rounded-full"></div>
-            
+
             <div className="space-y-12">
               {steps.map((step, index) => (
                 <div key={index} className="flex flex-col md:flex-row items-start">
@@ -57,7 +57,7 @@ const HowItWorks: React.FC = () => {
                       step.number
                     )}
                   </div>
-                  
+
                   {/* Step content */}
                   <div className="w-full md:ml-8 p-6 bg-gray-800/80 backdrop-blur-sm rounded-xl border border-gray-700 hover:border-blue-500/50 transition-all duration-300 shadow-lg hover:shadow-blue-500/20">
                     <h3 className="text-xl font-semibold mb-3 text-white flex items-center">
@@ -78,23 +78,26 @@ const HowItWorks: React.FC = () => {
               ))}
             </div>
           </div>
-          
+
           <div className="mt-16 text-center">
             <div className="p-8 bg-gray-800/60 backdrop-blur-sm rounded-xl border border-gray-700 shadow-lg max-w-3xl mx-auto">
               <h3 className="text-2xl font-bold mb-4 text-white">
-                Ready to Upgrade Your Trading Advantage?
+                Security + Transparency
               </h3>
               <p className="text-gray-300 mb-6">
-                Join the revolution. This initiative is reserved for proven Bonkbot and Trojan users—designed to lower trading 
-                obstacles and enhance your financial potential. Take the next step to turn your trading activity into a real on-chain advantage.
+                We’ll never ask you to approve anything or send tokens.
+                Everything is powered by:
+
+                Telegram Auth to confirm identity,
+
+                RPC + indexer-based scans to check wallet activity,
+
+                Bot signature detection to validate Bonkbot and Trojan trades,
+
+                Push-only rewards sent directly to eligible wallets
               </p>
-              
-              <Button
-                onClick={scrollToTop}
-                className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white py-4 px-8 rounded-lg text-lg font-medium shadow-lg transition-all duration-300 hover:shadow-xl"
-              >
-                Verify Now
-              </Button>
+
+
             </div>
           </div>
         </div>
