@@ -6,7 +6,7 @@
   "scripts": {
     "start": "vite --force",
     "serve": "pnpm run build && node server.js",
-    "build": "pnpm run generate-changelog && vite build",
+    "build": "vite build",
     "test": "vitest",
     "whybundled": "pnpm run profile && whybundled stats.json",
     "generate-mtproto-types": "node ./src/scripts/generate_mtproto_types.js src/",
